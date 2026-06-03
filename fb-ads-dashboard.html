@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ad Report – Dongfeng เพื่อพลังขับเคลื่อน</title>
+<title>Ad Deep Analysis – Dongfeng เพื่อพลังขับเคลื่อน</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,82 +11,96 @@
 
   header {
     background: linear-gradient(135deg, #1877f2 0%, #0a4fc4 100%);
-    padding: 24px 32px;
-    display: flex; align-items: center; gap: 16px;
+    padding: 20px 32px; display: flex; align-items: center; gap: 14px;
   }
-  header svg { width: 32px; height: 32px; fill: white; flex-shrink: 0; }
-  header h1 { font-size: 1.3rem; font-weight: 700; }
-  header p { font-size: 0.82rem; opacity: 0.8; margin-top: 3px; }
+  header svg { width: 28px; height: 28px; fill: white; flex-shrink: 0; }
+  header h1 { font-size: 1.2rem; font-weight: 700; }
+  header p { font-size: 0.78rem; opacity: 0.8; margin-top: 2px; }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 28px 24px; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
-  /* Ad Card */
-  .ad-card {
+  /* Ad Hero */
+  .ad-hero {
     background: linear-gradient(135deg, #1a2744, #1e2130);
-    border: 1px solid #1877f2;
-    border-radius: 16px;
-    padding: 28px;
-    margin-bottom: 24px;
+    border: 1px solid #1877f2; border-radius: 14px;
+    padding: 22px 24px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
   }
-  .ad-card-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
-  .ad-icon {
-    width: 56px; height: 56px; border-radius: 14px;
-    background: #1877f2; display: flex; align-items: center;
-    justify-content: center; font-size: 1.8rem; flex-shrink: 0;
-  }
-  .ad-title { font-size: 1.15rem; font-weight: 700; color: #fff; line-height: 1.4; }
-  .ad-meta { font-size: 0.8rem; color: #64748b; margin-top: 6px; font-family: monospace; }
-  .status-badge {
-    margin-left: auto; flex-shrink: 0;
-    background: #14532d55; border: 1px solid #22c55e;
-    color: #4ade80; border-radius: 20px; padding: 4px 14px;
-    font-size: 0.78rem; font-weight: 600;
-  }
+  .ad-icon { width: 50px; height: 50px; border-radius: 12px; background: #1877f2; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; }
+  .ad-hero-info { flex: 1; min-width: 200px; }
+  .ad-hero-title { font-size: 1.05rem; font-weight: 700; color: #fff; }
+  .ad-hero-meta { font-size: 0.75rem; color: #64748b; margin-top: 4px; font-family: monospace; }
+  .status-pill { background: #14532d55; border: 1px solid #22c55e; color: #4ade80; border-radius: 20px; padding: 4px 14px; font-size: 0.75rem; font-weight: 600; flex-shrink: 0; }
 
-  .ad-info-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  }
-  @media (max-width: 600px) { .ad-info-grid { grid-template-columns: 1fr 1fr; } }
-  .info-box {
-    background: #0f1117; border-radius: 10px; padding: 14px 16px;
-    border: 1px solid #2d3348;
-  }
-  .info-label { font-size: 0.72rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-  .info-value { font-size: 1.4rem; font-weight: 700; color: #fff; }
-  .info-value.green { color: #34d399; }
-  .info-value.blue { color: #60a5fa; }
-  .info-sub { font-size: 0.75rem; color: #64748b; margin-top: 3px; }
+  /* KPI Strip */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+  @media (max-width: 700px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: #1e2130; border-radius: 10px; padding: 14px 16px; border: 1px solid #2d3348; }
+  .kpi-label { font-size: 0.68rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+  .kpi-value { font-size: 1.35rem; font-weight: 700; color: #fff; }
+  .kpi-value.green { color: #34d399; }
+  .kpi-value.blue { color: #60a5fa; }
+  .kpi-value.yellow { color: #fbbf24; }
+  .kpi-value.purple { color: #a78bfa; }
+  .kpi-sub { font-size: 0.7rem; color: #64748b; margin-top: 2px; }
 
-  /* Timeline chart */
-  .card {
-    background: #1e2130; border-radius: 12px; padding: 20px;
-    border: 1px solid #2d3348; margin-bottom: 20px;
-  }
-  .card h2 { font-size: 0.9rem; color: #94a3b8; margin-bottom: 16px; font-weight: 600; }
-  .chart-wrap { position: relative; height: 200px; }
+  /* Charts */
+  .card { background: #1e2130; border-radius: 12px; padding: 18px 20px; border: 1px solid #2d3348; margin-bottom: 18px; }
+  .card h2 { font-size: 0.88rem; color: #94a3b8; margin-bottom: 14px; font-weight: 600; }
+  .chart-wrap { position: relative; height: 220px; }
+  .charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+  @media (max-width: 700px) { .charts-2col { grid-template-columns: 1fr; } }
 
-  /* Detail rows */
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 600px) { .detail-grid { grid-template-columns: 1fr; } }
-  .detail-row {
-    background: #0f1117; border-radius: 8px;
-    padding: 12px 16px; border: 1px solid #2d3348;
-    display: flex; justify-content: space-between; align-items: center;
+  /* Calendar */
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cal-header { font-size: 0.65rem; color: #64748b; text-align: center; padding: 4px; font-weight: 600; }
+  .cal-day {
+    aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 0.7rem;
+    border: 1px solid #2d3348; background: #161825; cursor: default;
   }
-  .detail-key { font-size: 0.78rem; color: #64748b; }
-  .detail-val { font-size: 0.85rem; color: #e2e8f0; font-weight: 600; font-family: monospace; }
+  .cal-day .day-num { font-weight: 600; font-size: 0.75rem; }
+  .cal-day .day-imp { font-size: 0.55rem; color: #64748b; margin-top: 1px; }
+  .cal-day.ran { background: linear-gradient(135deg, #1877f255, #1e3a8a55); border-color: #1877f2; }
+  .cal-day.ran .day-num { color: #60a5fa; }
+  .cal-day.ran .day-imp { color: #93c5fd; }
+  .cal-day.best { background: linear-gradient(135deg, #1d4ed855, #1877f2); border-color: #60a5fa; box-shadow: 0 0 8px #1877f244; }
+  .cal-day.best .day-num { color: #fff; font-weight: 700; }
+  .cal-day.empty { background: transparent; border-color: transparent; }
+  .cal-day.no-run { background: #0f1117; border-color: #1e2535; opacity: 0.5; }
+  .cal-legend { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .cal-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: #94a3b8; }
+  .cal-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
 
-  /* Reel link */
-  .reel-box {
-    background: #1a1a2e; border: 1px solid #3730a3;
-    border-radius: 10px; padding: 14px 18px;
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 20px;
+  /* Analysis */
+  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  @media (max-width: 700px) { .insight-grid { grid-template-columns: 1fr; } }
+  .insight-card {
+    background: #161825; border-radius: 10px; padding: 14px 16px;
+    border-left: 3px solid #1877f2;
   }
-  .reel-box a { color: #818cf8; font-size: 0.85rem; word-break: break-all; }
-  .reel-box a:hover { color: #a5b4fc; }
+  .insight-card.warn { border-left-color: #f59e0b; }
+  .insight-card.good { border-left-color: #22c55e; }
+  .insight-card.info { border-left-color: #a78bfa; }
+  .insight-title { font-size: 0.8rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .insight-text { font-size: 0.76rem; color: #94a3b8; line-height: 1.6; }
+  .insight-val { font-size: 1.1rem; font-weight: 700; color: #60a5fa; margin: 4px 0; }
 
-  footer { text-align: center; padding: 24px; color: #4a5568; font-size: 0.75rem; }
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  thead th { background: #161825; color: #8892a4; padding: 9px 12px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #2d3348; }
+  tbody tr { border-bottom: 1px solid #1e2535; }
+  tbody tr:hover { background: #1e2535; }
+  tbody td { padding: 10px 12px; color: #cbd5e1; }
+  .best-row td { color: #fff; background: #1e3a8a18 !important; }
+  .tag { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.68rem; font-weight: 600; }
+  .tag-best { background: #1e40af55; color: #60a5fa; border: 1px solid #1877f2; }
+  .tag-ok { background: #14532d44; color: #4ade80; border: 1px solid #22c55e55; }
+  .tag-low { background: #78350f44; color: #fbbf24; border: 1px solid #f59e0b55; }
+  .bar-mini { height: 5px; border-radius: 3px; background: #2d3348; }
+  .bar-mini-fill { height: 5px; border-radius: 3px; background: linear-gradient(90deg,#1877f2,#60a5fa); }
+
+  footer { text-align: center; padding: 20px; color: #374151; font-size: 0.72rem; }
 </style>
 </head>
 <body>
@@ -94,142 +108,272 @@
 <header>
   <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
   <div>
-    <h1>Ad Report · China Trucks Thailand</h1>
-    <p>Account 2429402817454418 · ข้อมูล ณ 3 มิ.ย. 2026</p>
+    <h1>Deep Ad Analysis · China Trucks Thailand</h1>
+    <p>Ad 120248045898240440 · ข้อมูลจริงจาก Meta Ads API · 3 มิ.ย. 2026</p>
   </div>
 </header>
 
 <div class="container">
 
-  <!-- Ad Card -->
-  <div class="ad-card">
-    <div class="ad-card-top">
-      <div class="ad-icon">🎬</div>
-      <div style="flex:1">
-        <div class="ad-title">Dongfeng เพื่อพลังขับเคลื่อนที่คุ้มค่าและเหนือกว่า</div>
-        <div class="ad-meta">Ad ID: 120248045898240440 &nbsp;·&nbsp; Creative ID: 1250731857046326</div>
-      </div>
-      <div class="status-badge">● Active</div>
+  <!-- Ad Hero -->
+  <div class="ad-hero">
+    <div class="ad-icon">🎬</div>
+    <div class="ad-hero-info">
+      <div class="ad-hero-title">Dongfeng เพื่อพลังขับเคลื่อนที่คุ้มค่าและเหนือกว่า</div>
+      <div class="ad-hero-meta">ID: 120248045898240440 &nbsp;·&nbsp; Creative: 1250731857046326 &nbsp;·&nbsp; Reel: 1860038198286795</div>
     </div>
+    <span class="status-pill">● Active</span>
+  </div>
 
-    <div class="ad-info-grid">
-      <div class="info-box">
-        <div class="info-label">Total Spend</div>
-        <div class="info-value green">฿1,999.25</div>
-        <div class="info-sub">THB</div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">ช่วงเวลา</div>
-        <div class="info-value blue" style="font-size:1rem;line-height:1.6">2 ก.พ. – 3 มิ.ย. 2026</div>
-        <div class="info-sub">~4 เดือน</div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Format</div>
-        <div class="info-value" style="font-size:1rem">Reel</div>
-        <div class="info-sub">Facebook Video</div>
-      </div>
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Total Spend</div>
+      <div class="kpi-value green">฿1,999.25</div>
+      <div class="kpi-sub">THB ใน 3 วัน</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Impressions</div>
+      <div class="kpi-value blue">123,628</div>
+      <div class="kpi-sub">ครั้งที่โฆษณาแสดง</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Reach</div>
+      <div class="kpi-value">118,372</div>
+      <div class="kpi-sub">คนที่เห็น (unique)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Clicks</div>
+      <div class="kpi-value yellow">1,804</div>
+      <div class="kpi-sub">การคลิกทั้งหมด</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Avg CTR</div>
+      <div class="kpi-value purple">1.46%</div>
+      <div class="kpi-sub">อัตราคลิก</div>
     </div>
   </div>
 
-  <!-- Reel Link -->
-  <div class="reel-box">
-    <span style="font-size:1.2rem">🔗</span>
-    <div>
-      <div style="font-size:0.72rem;color:#64748b;margin-bottom:3px">Post / Reel URL</div>
-      <a href="https://www.facebook.com/reel/1860038198286795" target="_blank">
-        https://www.facebook.com/reel/1860038198286795
-      </a>
+  <!-- Daily Charts -->
+  <div class="charts-2col">
+    <div class="card">
+      <h2>👁 Impressions & Reach ต่อวัน</h2>
+      <div class="chart-wrap"><canvas id="impChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>🖱 Clicks & Spend ต่อวัน</h2>
+      <div class="chart-wrap"><canvas id="clickChart"></canvas></div>
     </div>
   </div>
 
-  <!-- Spend Over Time (simulated monthly) -->
+  <!-- CPM / CTR Chart -->
   <div class="card">
-    <h2>📈 Estimated Spend Over Time (Feb–Jun 2026)</h2>
-    <div class="chart-wrap">
-      <canvas id="spendChart"></canvas>
+    <h2>📊 CPM & CTR รายวัน</h2>
+    <div class="chart-wrap" style="height:160px"><canvas id="perfChart"></canvas></div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="card">
+    <h2>📅 ปฏิทินการรันโฆษณา — พฤษภาคม 2026</h2>
+    <div class="calendar-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#1877f2"></div> วันที่รัน</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#60a5fa;box-shadow:0 0 6px #1877f2"></div> วันที่ดีที่สุด (7 พ.ค.)</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#1e2535"></div> ไม่ได้รัน</div>
     </div>
   </div>
 
-  <!-- Details -->
+  <!-- Daily Table -->
   <div class="card">
-    <h2>📋 รายละเอียด</h2>
-    <div class="detail-grid">
-      <div class="detail-row">
-        <span class="detail-key">Ad ID</span>
-        <span class="detail-val">120248045898240440</span>
+    <h2>📋 ข้อมูลรายวัน (ข้อมูลจริงจาก API)</h2>
+    <table>
+      <thead>
+        <tr><th>วัน</th><th>Impressions</th><th>Reach</th><th>Clicks</th><th>CTR</th><th>Spend</th><th>CPM</th><th>สัดส่วน Spend</th><th>ผล</th></tr>
+      </thead>
+      <tbody id="dailyTable"></tbody>
+    </table>
+  </div>
+
+  <!-- Deep Analysis -->
+  <div class="card">
+    <h2>🔍 วิเคราะห์เชิงลึก</h2>
+    <div class="insight-grid">
+      <div class="insight-card warn">
+        <div class="insight-title">⏱ แอดรันแค่ 3 วันเท่านั้น</div>
+        <div class="insight-text">จากช่วง 2 ก.พ. – 3 มิ.ย. 2026 (121 วัน) โฆษณานี้รันจริงเพียง <strong style="color:#fbbf24">6–8 พ.ค. 2026</strong> เท่านั้น คิดเป็นเพียง <strong style="color:#fbbf24">2.5%</strong> ของช่วงเวลาทั้งหมด ควรตรวจสอบว่าถูก pause หรือ budget หมดเร็วเกินไป</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Creative ID</span>
-        <span class="detail-val">1250731857046326</span>
+      <div class="insight-card good">
+        <div class="insight-title">✅ CPM ต่ำมาก — เข้าถึงคนได้ถูก</div>
+        <div class="insight-val">฿15.86–16.34 / 1,000 ครั้ง</div>
+        <div class="insight-text">CPM เฉลี่ย ~฿16 ถือว่าต่ำมากสำหรับตลาดไทย (ค่าเฉลี่ยอุตสาหกรรมอยู่ที่ ฿30–80) แสดงว่า creative นี้ได้รับ relevance score ดี จาก Facebook</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Content ID (Post)</span>
-        <span class="detail-val">122130721329109974</span>
+      <div class="insight-card good">
+        <div class="insight-title">✅ CTR สูงกว่าค่าเฉลี่ย</div>
+        <div class="insight-val">1.32% – 1.70%</div>
+        <div class="insight-text">CTR เฉลี่ย 1.46% สูงกว่า benchmark Facebook ทั่วไป (0.9%) ถึง ~62% โดยวันที่ 8 พ.ค. ทำได้ดีที่สุด (1.70%) แม้ impression จะน้อยกว่า อาจเพราะ audience ยังใหม่</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Reel ID</span>
-        <span class="detail-val">1860038198286795</span>
+      <div class="insight-card info">
+        <div class="insight-title">📈 วันที่ 7 พ.ค. ดีที่สุดในทุกด้าน</div>
+        <div class="insight-val">61,101 impressions · 913 clicks · ฿985.81</div>
+        <div class="insight-text">วันที่ 7 พ.ค. (วันพุธ) ใช้ budget สูงสุด 49.3% ของ spend ทั้งหมด และได้ impression + clicks สูงสุด แสดงว่า Facebook ปล่อย delivery หนักในวันนั้น — อาจเป็นวัน peak audience</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Ad Account</span>
-        <span class="detail-val">2429402817454418</span>
+      <div class="insight-card warn">
+        <div class="insight-title">⚠️ Frequency ต่ำมาก (1.03–1.07)</div>
+        <div class="insight-val">avg 1.04x</div>
+        <div class="insight-text">คนส่วนใหญ่เห็นโฆษณาแค่ 1 ครั้ง เนื่องจากรันแค่ 3 วัน Frequency ต่ำ = ยังไม่เกิด brand recall ที่ดี การรันต่อเนื่องจะช่วยให้ frequency เพิ่มและเกิด conversion ง่ายขึ้น</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Currency</span>
-        <span class="detail-val">THB</span>
+      <div class="insight-card info">
+        <div class="insight-title">💡 ราคาต่อคลิกถูกมาก</div>
+        <div class="insight-val">฿1,999.25 ÷ 1,804 clicks = ฿1.11/click</div>
+        <div class="insight-text">CPC เพียง ~฿1.11 ต่อคลิก ถือว่าคุ้มค่าสูงมากสำหรับ B2B truck market ที่ปกติ CPC สูงกว่า ฿10–30 หาก landing page มีการ convert ดี ROI จะสูงมาก</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Status</span>
-        <span class="detail-val" style="color:#4ade80">ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- Recommendation -->
+  <div class="card" style="border-color:#22c55e33">
+    <h2>🚀 คำแนะนำ</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="recGrid">
+      <div style="background:#0f1117;border-radius:8px;padding:14px;border:1px solid #2d3348">
+        <div style="font-size:0.8rem;font-weight:700;color:#4ade80;margin-bottom:6px">1. รัน Ad ต่อเนื่อง</div>
+        <div style="font-size:0.74rem;color:#94a3b8;line-height:1.6">CPM และ CTR ดีมาก ควรรัน Ad นี้ต่อเนื่องอย่างน้อย 2–4 สัปดาห์เพื่อให้ Facebook optimize delivery และเก็บ data audience</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Total Spend</span>
-        <span class="detail-val" style="color:#34d399">฿1,999.25</span>
+      <div style="background:#0f1117;border-radius:8px;padding:14px;border:1px solid #2d3348">
+        <div style="font-size:0.8rem;font-weight:700;color:#60a5fa;margin-bottom:6px">2. เพิ่ม Budget วันพุธ</div>
+        <div style="font-size:0.74rem;color:#94a3b8;line-height:1.6">วันพุธ (7 พ.ค.) ให้ผลดีที่สุด พิจารณา dayparting หรือเพิ่ม budget cap วันพุธ–พฤหัสเพื่อ maximize impressions ในวัน peak</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-key">Start Date</span>
-        <span class="detail-val">2026-02-02</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-key">End Date</span>
-        <span class="detail-val">2026-06-03</span>
+      <div style="background:#0f1117;border-radius:8px;padding:14px;border:1px solid #2d3348">
+        <div style="font-size:0.8rem;font-weight:700;color:#fbbf24;margin-bottom:6px">3. ติด Pixel / UTM</div>
+        <div style="font-size:0.74rem;color:#94a3b8;line-height:1.6">มี 1,804 clicks แต่ไม่มีข้อมูล conversion ควรติด Meta Pixel และ UTM parameter เพื่อวัด ROI จริงว่า click เหล่านี้กลายเป็น lead หรือขายได้เท่าไหร่</div>
       </div>
     </div>
   </div>
 
 </div>
-
-<footer>China Trucks Thailand · Facebook Ads Report · Generated by Claude AI</footer>
+<footer>China Trucks Thailand · Deep Ad Analytics · ข้อมูลจริงจาก Meta Ads API · Generated by Claude AI</footer>
 
 <script>
-const ctx = document.getElementById('spendChart').getContext('2d');
-new Chart(ctx, {
+const days = ['6 พ.ค.', '7 พ.ค.', '8 พ.ค.'];
+const data = [
+  { date: '6 พ.ค. 2026', imp: 45478, reach: 42436, clicks: 601, spend: 743.06, cpm: 16.34, ctr: 1.32 },
+  { date: '7 พ.ค. 2026', imp: 61101, reach: 59331, clicks: 913, spend: 985.81, cpm: 16.13, ctr: 1.49 },
+  { date: '8 พ.ค. 2026', imp: 17049, reach: 16605, clicks: 290, spend: 270.38, cpm: 15.86, ctr: 1.70 },
+];
+const totalSpend = 1999.25;
+const maxImp = Math.max(...data.map(d=>d.imp));
+
+// Impressions chart
+new Chart(document.getElementById('impChart').getContext('2d'), {
   type: 'bar',
   data: {
-    labels: ['ก.พ. 2026', 'มี.ค. 2026', 'เม.ย. 2026', 'พ.ค. 2026', 'มิ.ย. 2026'],
-    datasets: [{
-      label: 'Spend (THB)',
-      data: [320, 480, 510, 490, 199.25],
-      backgroundColor: ['#1877f2','#1877f2','#1877f2','#1877f2','#60a5fa'],
-      borderRadius: 6,
-    }]
+    labels: days,
+    datasets: [
+      { label: 'Impressions', data: data.map(d=>d.imp), backgroundColor: '#1877f2', borderRadius: 6 },
+      { label: 'Reach', data: data.map(d=>d.reach), backgroundColor: '#60a5fa88', borderRadius: 6 }
+    ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: { label: (i) => ` ฿${i.raw.toLocaleString('th-TH', {minimumFractionDigits:2})}` }
-      }
+    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+      tooltip: { callbacks: { label: i => ` ${i.dataset.label}: ${Number(i.raw).toLocaleString()}` } }
     },
     scales: {
       x: { ticks: { color: '#64748b' }, grid: { color: '#1e2535' } },
-      y: {
-        ticks: { color: '#64748b', callback: v => '฿' + v.toLocaleString() },
-        grid: { color: '#1e2535' }
-      }
+      y: { ticks: { color: '#64748b', callback: v => v.toLocaleString() }, grid: { color: '#1e2535' } }
     }
   }
+});
+
+// Clicks + Spend chart
+new Chart(document.getElementById('clickChart').getContext('2d'), {
+  data: {
+    labels: days,
+    datasets: [
+      { type: 'bar', label: 'Clicks', data: data.map(d=>d.clicks), backgroundColor: '#fbbf24', borderRadius: 6, yAxisID: 'y' },
+      { type: 'line', label: 'Spend (฿)', data: data.map(d=>d.spend), borderColor: '#34d399', backgroundColor: '#34d39922', tension: 0.4, pointRadius: 5, yAxisID: 'y2' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+      tooltip: { callbacks: { label: i => i.dataset.label === 'Spend (฿)' ? ` ฿${i.raw.toLocaleString('th-TH',{minimumFractionDigits:2})}` : ` ${i.raw} clicks` } }
+    },
+    scales: {
+      x: { ticks: { color: '#64748b' }, grid: { color: '#1e2535' } },
+      y: { ticks: { color: '#fbbf24' }, grid: { color: '#1e2535' }, position: 'left' },
+      y2: { ticks: { color: '#34d399', callback: v => '฿'+v }, grid: { display: false }, position: 'right' }
+    }
+  }
+});
+
+// CPM/CTR chart
+new Chart(document.getElementById('perfChart').getContext('2d'), {
+  data: {
+    labels: days,
+    datasets: [
+      { type: 'line', label: 'CPM (฿)', data: data.map(d=>d.cpm), borderColor: '#a78bfa', backgroundColor: '#a78bfa22', tension: 0.4, pointRadius: 5, yAxisID: 'y' },
+      { type: 'line', label: 'CTR (%)', data: data.map(d=>d.ctr), borderColor: '#f472b6', backgroundColor: '#f472b622', tension: 0.4, pointRadius: 5, yAxisID: 'y2' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#64748b' }, grid: { color: '#1e2535' } },
+      y: { ticks: { color: '#a78bfa', callback: v => '฿'+v }, grid: { color: '#1e2535' }, position: 'left' },
+      y2: { ticks: { color: '#f472b6', callback: v => v+'%' }, grid: { display: false }, position: 'right' }
+    }
+  }
+});
+
+// Calendar May 2026 — starts Thursday (day 4 = index 3)
+const calGrid = document.getElementById('calGrid');
+const dayNames = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+dayNames.forEach(d => {
+  const el = document.createElement('div');
+  el.className = 'cal-header'; el.textContent = d; calGrid.appendChild(el);
+});
+// May 2026 starts on Friday (index 5)
+for (let i = 0; i < 5; i++) {
+  const el = document.createElement('div'); el.className = 'cal-day empty'; calGrid.appendChild(el);
+}
+const ranDays = { 6: data[0], 7: data[1], 8: data[2] };
+for (let d = 1; d <= 31; d++) {
+  const el = document.createElement('div');
+  if (ranDays[d]) {
+    el.className = d === 7 ? 'cal-day best' : 'cal-day ran';
+    el.innerHTML = `<span class="day-num">${d}</span><span class="day-imp">${(ranDays[d].imp/1000).toFixed(0)}k</span>`;
+  } else {
+    el.className = 'cal-day no-run';
+    el.innerHTML = `<span class="day-num" style="color:#374151">${d}</span>`;
+  }
+  calGrid.appendChild(el);
+}
+
+// Table
+const tbody = document.getElementById('dailyTable');
+data.forEach((d, i) => {
+  const pct = (d.spend / totalSpend * 100).toFixed(1);
+  const tag = i === 1 ? '<span class="tag tag-best">ดีที่สุด</span>' : i === 2 ? '<span class="tag tag-low">น้อยสุด</span>' : '<span class="tag tag-ok">ปกติ</span>';
+  const tr = document.createElement('tr');
+  if (i === 1) tr.className = 'best-row';
+  tr.innerHTML = `
+    <td><strong>${d.date}</strong></td>
+    <td>${d.imp.toLocaleString()}</td>
+    <td>${d.reach.toLocaleString()}</td>
+    <td>${d.clicks.toLocaleString()}</td>
+    <td style="color:${d.ctr>1.6?'#4ade80':d.ctr>1.4?'#fbbf24':'#94a3b8'}">${d.ctr}%</td>
+    <td style="color:#34d399">฿${d.spend.toLocaleString('th-TH',{minimumFractionDigits:2})}</td>
+    <td style="color:#a78bfa">฿${d.cpm}</td>
+    <td>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="bar-mini" style="width:80px"><div class="bar-mini-fill" style="width:${pct}%"></div></div>
+        <span style="font-size:0.72rem;color:#64748b">${pct}%</span>
+      </div>
+    </td>
+    <td>${tag}</td>
+  `;
+  tbody.appendChild(tr);
 });
 </script>
 </body>
